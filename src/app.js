@@ -1,5 +1,5 @@
 import {AppContainer} from 'react-hot-loader'
-import React from 'react'
+import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route} from 'react-router-dom/es'
 
@@ -9,7 +9,6 @@ import './app.scss'
 
 // States
 import Index from './states/index/IndexState'
-
 
 const render = () => {
   return ReactDOM.render(
