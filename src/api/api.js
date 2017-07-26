@@ -3,12 +3,12 @@ import request from 'superagent'
 
 export default class API {
   constructor() {
-    this.baseUrl = `/api`;
+    this.baseUrl = `/users`;
   }
 
-  getList() {
+  getUserInfo() {
     return request
-      .get(`${this.baseUrl}/list`)
+      .get(this.baseUrl)
       .then((res) => {
         return res.body;
       });

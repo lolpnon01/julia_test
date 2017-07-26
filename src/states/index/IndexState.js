@@ -12,6 +12,10 @@ import Modal from 'react-bootstrap/es/Modal'
 // CSS
 import './Index.scss'
 
+// API
+import API from '../../api/api'
+const api = new API();
+
 
 class TableList extends Component {
   constructor(props) {
@@ -19,25 +23,8 @@ class TableList extends Component {
   }
 
   render() {
-    const arr = [{
-      id: '1',
-      firstName: 'Mark',
-      lastName: 'Jacob',
-      username: '@mdo'
-    }, {
-      id: '2',
-      firstName: 'John',
-      lastName: 'Smith',
-      username: '@joad23'
-    }, {
-      id: '3',
-      firstName: 'Kiely',
-      lastName: 'Jenner',
-      username: '@kitty'
-    }];
-
     return (
-      <Table className="main-info" striped bordered condensed hover>
+      <Table className="user-list" striped bordered condensed hover>
         <thead>
         <tr>
           <th>#</th>
@@ -47,12 +34,14 @@ class TableList extends Component {
         </tr>
         </thead>
         <tbody>
-        {arr.map((item, index) => {
-          return <tr key={index} onClick={this.props.openModal}>
+        {this.props.list.map((item, index) => {
+          return <tr key={index} onClick={() => {
+            this.props.openModal(item);
+          }}>
             <td>{item.id}</td>
-            <td>{item.firstName}</td>
-            <td>{item.lastName}</td>
+            <td>{item.name}</td>
             <td>{item.username}</td>
+            <td>{item.email}</td>
           </tr>;
         })}
         </tbody>
@@ -67,6 +56,7 @@ class ModalView extends Component {
   }
 
   render() {
+    const item = this.props.item;
     return (
       <div>
         <Modal show={this.props.show} onHide={this.props.close}>
@@ -74,7 +64,8 @@ class ModalView extends Component {
             <Modal.Title>User information</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Info</h4>
+            <h4>{item ? item.id : null}</h4>
+            <h4>{item ? item.phone : null}</h4>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.props.close}>Close</Button>
@@ -91,16 +82,30 @@ export default class IndexComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      item: null,
+      list: []
     };
   }
 
-  close() {
-    this.setState({showModal: false});
+  componentDidMount() {
+    api.getUserInfo().then((list) => {
+      this.setState({list});
+    });
   }
 
-  open() {
-    this.setState({showModal: true});
+  close() {
+    this.setState({
+      showModal: false,
+      item: null
+    });
+  }
+
+  open(item) {
+    this.setState({
+      showModal: true,
+      item
+    });
   }
 
   render() {
@@ -109,11 +114,13 @@ export default class IndexComponent extends Component {
         <div>
           <h1 className="name">App</h1>
           <TableList
+            list={this.state.list}
             openModal={this.open.bind(this)}
             {...this.props}
           />
           <ModalView
             show={this.state.showModal}
+            item={this.state.item}
             close={this.close.bind(this)}
             {...this.props}
           />

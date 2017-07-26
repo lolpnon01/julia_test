@@ -55,12 +55,7 @@ module.exports = {
     publicPath: '/',
     hot: true,
     proxy: {
-      '/api': {
-        target: webpackConfig.apiUrl,
-        changeOrigin: true,
-        secure: false
-      },
-      '/api2.5': {
+      '/users': {
         target: webpackConfig.apiUrl,
         changeOrigin: true,
         secure: false

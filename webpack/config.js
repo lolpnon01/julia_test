@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   devPort: 3000,
-  apiUrl: 'http://api.example.com',
+  apiUrl: 'https://jsonplaceholder.typicode.com',
   entryName: 'app.js',
   outputName: 'static/[name].js',
   outputPath: path.resolve(__dirname, '../dist'),
